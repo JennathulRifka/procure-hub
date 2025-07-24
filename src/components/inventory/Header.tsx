@@ -1,17 +1,42 @@
-import { Search, Bell, User, Package } from "lucide-react";
+import { Search, Bell, User, Package, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const navItems = [
+    { label: "Dashboard", path: "/dashboard" },
+    { label: "Inventory", path: "/inventory" },
+    { label: "Purchase Requests", path: "/purchase-requests" },
+    { label: "Vendors", path: "/vendors" },
+    { label: "Reports", path: "/reports" },
+  ];
+
   return (
     <header className="bg-card border-b border-border px-6 py-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-8">
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate("/dashboard")}>
             <Package className="h-8 w-8 text-primary" />
             <h1 className="text-xl font-semibold text-foreground">ProCure</h1>
           </div>
+          
+          <nav className="hidden md:flex items-center space-x-4">
+            {navItems.map((item) => (
+              <Button
+                key={item.path}
+                variant={location.pathname === item.path ? "default" : "ghost"}
+                size="sm"
+                onClick={() => navigate(item.path)}
+              >
+                {item.label}
+              </Button>
+            ))}
+          </nav>
         </div>
         
         <div className="flex items-center space-x-4">
@@ -32,7 +57,7 @@ const Header = () => {
             </Button>
           </div>
           
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate("/login")}>
             <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
               JD
             </div>
